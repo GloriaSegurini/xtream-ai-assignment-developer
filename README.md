@@ -119,15 +119,15 @@ Now there are different possibilities depending on your needs:
 2. move into the cloned repository's directory through the following command: cd repository-name
 3. move into the following folder: data_training_and_best_model_pick
 4. use the following command: python launchFromCommandLine.py to launch the pipeline with default parameters. Otherwise, here is the specification of every parameter:
-      --> xurl: type: str, content: data source, multiple args allowed: False, NOTE: data must be a cvs format
-      --> yurl: type: str, content: data source - target, multiple args allowed: False, NOTE: data must be a cvs format
-      --> imports: type: str, content: imports needed, multiple args allowed: True
-      --> models: type: str, content: models to launch, multiple args allowed: True
-      --> metrics: type: str, content: evaluation metrics, multiple args allowed: True
-      --> scores_file: type: str, content: pkl file where you save your scores, multiple args allowed: False, NOTE: needs .pkl extension
-      --> weights: type: int, content: metrics' weights, multiple args allowed: True
-      --> metric_tomin: type: str, content: metrics to be minimized, multiple args allowed: True
-      --> best_model_file: type: str, content: pkl file where you save the final results, multiple args allowed: False, NOTE: needs .pkl extension
+      - xurl: type: str, content: data source, multiple args allowed: False, NOTE: data must be a cvs format
+      - yurl: type: str, content: data source - target, multiple args allowed: False, NOTE: data must be a cvs format
+      - imports: type: str, content: imports needed, multiple args allowed: True
+      - models: type: str, content: models to launch, multiple args allowed: True
+      - metrics: type: str, content: evaluation metrics, multiple args allowed: True
+      - scores_file: type: str, content: pkl file where you save your scores, multiple args allowed: False, NOTE: needs .pkl extension
+      - weights: type: int, content: metrics' weights, multiple args allowed: True
+      - metric_tomin: type: str, content: metrics to be minimized, multiple args allowed: True
+      - best_model_file: type: str, content: pkl file where you save the final results, multiple args allowed: False, NOTE: needs .pkl extension
 
       IMPORTANT: here are some important notes:
       1. please, use double quotes for args of type str.
