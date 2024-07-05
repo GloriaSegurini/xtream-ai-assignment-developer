@@ -16,10 +16,10 @@ def data_preparation_func(data_url, to_drop, to_get_dummies, tg):
   data_dummy = pd.get_dummies(data_processed, columns=to_get_dummies, drop_first=True)
 
   x = data_dummy.drop(columns = tg)
-  y = data_dummy[tg]
+  y = data_dummy[[tg]]
 
   x.to_csv('x.csv', index = False)
-  y.to_pickle('y')
+  y.to_csv('y.csv', index = False)
 
 
 
