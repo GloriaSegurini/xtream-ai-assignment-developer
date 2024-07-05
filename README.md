@@ -68,4 +68,26 @@ Observability is key. Save every request and response made to the APIs to a **pr
 ---
 
 ## How to run
-Please fill this section as part of the assignment.
+🦎
+## Challenge 1
+In order to launch the code to execute the pipeline, here are the steps to follow:
+1. clone the current repository where you prefer on your local device through the following command: git clone https://github.com/GloriaSegurini/xtream-ai-assignment-developer
+Now there are different possibilities depending on your needs:
+- If you want to run the code from command line:
+    2. move into the cloned repository's directory through the following command: cd repository-name
+    3. move into the following folder: data_training_and_best_model_pick
+    4. use the following command: python launchFromCommandLine.py to launch the pipeline with default parameters. Otherwise, here is the specification of every parameter:
+      --> url: type: str, content: data source, multiple args allowed: False, NOTE: data must be a cvs format
+      --> imports: type: str, content: imports needed, multiple args allowed: True
+      --> models: type: str, content: models to launch, multiple args allowed: True
+      --> metrics: type: str, content: evaluation metrics, multiple args allowed: True
+      --> scores_file: type: str, content: pkl file where you save your scores, multiple args allowed: False, NOTE: needs .pkl extension
+      --> weights: type: int, content: metrics' weights, multiple args allowed: True
+      --> metric_tomin: type: str, content: metrics to be minimized, multiple args allowed: True
+      --> best_model_file: type: str, content: pkl file where you save the final results, multiple args allowed: False, NOTE: needs .pkl extension
+
+      IMPORTANT: here are some important notes:
+      1. please, use double quotes for args of type str.
+      2. where multiple args are allowed do not use any comma, just type something like this: --arg_to_add "arg1" "arg2"
+      3. The same as above goes for weights parameter: type something like this: --weights 1 2
+      4. It is *fundamental* that you pay attentions to the weights' order: it must be the same as the metrics. For example, if I type --metrics "r2_score" "mean_absolute_error", if I type --weights 1 2 it means 1          is the weight for r2_score metric and 2 is the weight for mean_absolute_error metric.
