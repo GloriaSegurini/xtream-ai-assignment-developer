@@ -7,14 +7,9 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score, mean_absolute_error
 from sklearn.tree import DecisionTreeRegressor
 
-url = "https://raw.githubusercontent.com/GloriaSegurini/xtream-ai-assignment-developer/main/data/diamonds.csv"
-data = pd.read_csv(url, delimiter = ",")
-data = data[(data.x * data.y * data.z != 0) & (data.price > 0)]
-data_processed = data.drop(columns=['depth', 'table', 'y', 'z'])
-data_dummy = pd.get_dummies(data_processed, columns=['cut', 'color', 'clarity'], drop_first=True)
-x = data_dummy.drop(columns='price')
-y = data_dummy.price
-
+x = pd.read_csv("https://raw.githubusercontent.com/GloriaSegurini/xtream-ai-assignment-developer/main/data_training_and_best_model_pick/x.csv")
+y = pd.read_csv("https://raw.githubusercontent.com/GloriaSegurini/xtream-ai-assignment-developer/main/data_training_and_best_model_pick/y.csv")
+y = y['price']
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
 
 models = [LinearRegression(), SVR(), DecisionTreeRegressor(random_state=0) ]

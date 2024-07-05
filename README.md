@@ -70,14 +70,57 @@ Observability is key. Save every request and response made to the APIs to a **pr
 ## How to run
 🦎
 ## Challenge 1
+### Idea behind the code
+The purpose of the code is to launch an automated pipeline for training several machine learning models. The user can decide which models to run, which metrics to use for evaluation, and what weights to assign to these metrics. Additionally, the user can also use their preferred data via the --url parameter.
+
+The data cleaning process has also been automated through the `data_preparation_func` function within the `data_preparation.py` file. However, this function is highly specific to the current dataset. Because of this specificity, this step has not been integrated into the automated pipeline responsible for training the models.
+
+The prepared data is stored in two CSV files, namely `x.csv` and `y.csv`, which contain the data that will be split by the automated pipeline (xtream-ai-assignment-developer > data_training_and_best_model_pick)
+
+The pipeline involves the following steps:
+
+1. Models are trained and saved within a dictionary for future use and also in a separate .pkl file under the name {modelname}_trained_model.pkl. Model predictions are made and stored in the same dictionary. In this step, the usable models are also saved, even if they haven't been fitted yet (in case they are elected as the best model). 
+
+2. Next, the required metrics are computed and saved again in the dictionary. The results are plotted. Everything (models, fitted models, parameters, predictions and metrics scores) is now saved into a pkl file provided by the user (parameter scores_file).
+
+3. If negative predictions are observed as for the initial notebook's request, the model responsible for these predictions is re-run. This time, adjustments are made to both y_train and the new predictions. The required metrics are recalculated and the results are plotted again. Of course, in this case as well, all results are saved in .pkl files and within a dictionary.
+
+4. At this point, for improved computational complexity, a single dictionary is created containing all the models that have been run up to this point along with their respective information. However, the predictions are dropped from this dictionary (they still remain within the .pkl files seen in the previous steps).
+
+5. The best model is finally chosen using the pick_best_model function. The scoring calculation proceeds as follows.
+Firstly, I've decided to allow the user to assign weights to various metrics, as there might be a situation where one model excels on a certain metric but performs poorly on another, and vice versa for another model. How does one choose in such a case? The idea is to assign a higher weight to the most important metric.
+To evaluate the best model, a function is used that normalizes the results of the various metrics, multiplies them by the assigned weight, and calculates the score for each model.
+Since some metrics may need to be minimized (such as MAE), these are included as 1 minus the metric in the function calculation above, so that the best model will have the highest score.
+
+For example, suppose we have the following scenario:
+|            | MODEL A | MODEL B |
+|------------|---------|---------|
+| r2_score   | 0.9     | 0.6     |
+| MAE_score  | 700     | 50      |
+| weight     | 1       | 2       | 
+
+In a similar scenario, the score calculation is:
+
+- For model A:
+  - \( r2\_score\_normalized = \frac{(0.9 - 0.6)}{(0.9 - 0.6)} = 1 \)
+  - \( MAE\_normalized = 1 - \frac{(700 - 50)}{(700 - 50)} = 0 \)
+  - \( score = weights \times metrics\_normalized = [1, 2] \times [1, 0] \)
+
+Finally, the model with the best score is returned, already fitted and ready to be used.
+Note: It is important to emphasize that *model selection should be performed on the validation set and not on the test set!*
+
+### Run code
+Here's how to run the code:
 In order to launch the code to execute the pipeline, here are the steps to follow:
 1. clone the current repository where you prefer on your local device through the following command: git clone https://github.com/GloriaSegurini/xtream-ai-assignment-developer
+
 Now there are different possibilities depending on your needs:
-- If you want to run the code from command line:
-    2. move into the cloned repository's directory through the following command: cd repository-name
-    3. move into the following folder: data_training_and_best_model_pick
-    4. use the following command: python launchFromCommandLine.py to launch the pipeline with default parameters. Otherwise, here is the specification of every parameter:
-      --> url: type: str, content: data source, multiple args allowed: False, NOTE: data must be a cvs format
+#### If you want to run the code from command line:
+2. move into the cloned repository's directory through the following command: cd repository-name
+3. move into the following folder: data_training_and_best_model_pick
+4. use the following command: python launchFromCommandLine.py to launch the pipeline with default parameters. Otherwise, here is the specification of every parameter:
+      --> xurl: type: str, content: data source, multiple args allowed: False, NOTE: data must be a cvs format
+      --> yurl: type: str, content: data source - target, multiple args allowed: False, NOTE: data must be a cvs format
       --> imports: type: str, content: imports needed, multiple args allowed: True
       --> models: type: str, content: models to launch, multiple args allowed: True
       --> metrics: type: str, content: evaluation metrics, multiple args allowed: True
@@ -91,3 +134,18 @@ Now there are different possibilities depending on your needs:
       2. where multiple args are allowed do not use any comma, just type something like this: --arg_to_add "arg1" "arg2"
       3. The same as above goes for weights parameter: type something like this: --weights 1 2
       4. It is *fundamental* that you pay attentions to the weights' order: it must be the same as the metrics. For example, if I type --metrics "r2_score" "mean_absolute_error", if I type --weights 1 2 it means 1          is the weight for r2_score metric and 2 is the weight for mean_absolute_error metric.
+      5. The metrics and models to be used must be typed exactly as they are written in the libraries. Below is an example snippet:
+      ```python launchFromCommandLine.py --xurl "https://raw.githubusercontent.com/GloriaSegurini/xtream-ai-assignment-developer/main/data_training_and_best_model_pick/x.csv" --yurl "https://raw.githubusercontent.com/GloriaSegurini/xtream-ai-assignment-developer/main/data_training_and_best_model_pick/y.csv" --imports "from sklearn.svm import SVR" "from sklearn.linear_model import LinearRegression" "from sklearn.metrics import r2_score, mean_absolute_error" "from sklearn.tree import DecisionTreeRegressor" --models "['LinearRegression()', 'SVR()', 'DecisionTreeRegressor(random_state=0)]" --metrics "['r2_score', 'mean_absolute_error']" --scores_file "my_scores.pkl" --weights 1 2 --metric_tomin "['mean_absolute_error']" --best_model_file "my_best_model.pkl"```
+
+#### If you want to run the code from the .py file byt inside an IDE
+2. Navigate to the folder where you cloned the original repository and go to `xtream-ai-assignment-developer > data_training_and_best_model_pick > launchpy`.
+
+#### If you want to run the code from ipynb
+2. Navigate to the folder where you cloned the original repository and go to `xtream-ai-assignment-developer > data_training_and_best_model_pick > launch_notebook`
+
+
+In the file `train_and_pick_bestModel.py`, where the functions used in `full_pip.py` are defined, there is also a function *to_df* that takes a .pkl file as input and allows it to be saved as a pandas DataFrame. This function can be useful for visualizing the final results.
+
+
+
+

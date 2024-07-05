@@ -12,6 +12,8 @@ DEFAULT_IMPORTS = [
     "from sklearn.tree import DecisionTreeRegressor"
 ]
 
+DEFAULT_XURL = "https://raw.githubusercontent.com/GloriaSegurini/xtream-ai-assignment-developer/main/data_training_and_best_model_pick/x.csv"
+DEFAULT_YURL = "https://raw.githubusercontent.com/GloriaSegurini/xtream-ai-assignment-developer/main/data_training_and_best_model_pick/y.csv"
 DEFAULT_MODELS = ["LinearRegression()", "SVR()", "DecisionTreeRegressor(random_state=0)"]
 DEFAULT_METRICS = ["r2_score", "mean_absolute_error"]
 DEFAULT_WEIGHTS = [1,2]
@@ -20,11 +22,9 @@ DEFAULT_METRICS_TOMIN = ["mean_absolute_error"]
 
 # Define arguments from command line
 parser = argparse.ArgumentParser(description='Run machine learning models')
-parser.add_argument('--url', type=str, default="https://raw.githubusercontent.com/GloriaSegurini/xtream-ai-assignment-developer/main/data/diamonds.csv", help='URL of the dataset')
+parser.add_argument('--xurl', type=str, default= DEFAULT_XURL, help='URL of dataset')
+parser.add_argument('--yurl', type=str, default= DEFAULT_YURL, help='URL of dataset - target vals')
 parser.add_argument('--imports', type=str, default = DEFAULT_IMPORTS, nargs='+', help='List of import statements')
-
-
-
 parser.add_argument('--models', nargs='+', default = DEFAULT_MODELS, help='List of models to use (as a string to be evaluated)')
 parser.add_argument('--metrics', type=str, nargs='+', default = DEFAULT_METRICS, help='List of metrics to evaluate (as a string to be evaluated)')
 parser.add_argument('--scores_file', type=str, default='scores_file_pkl', help='File to save the scores')
@@ -56,13 +56,9 @@ weights = []
 for weight in args.weights:
     weights.append(weight)
 
-# Carica e preprocessa il dataset
-data = pd.read_csv(args.url, delimiter=",")
-data = data[(data.x * data.y * data.z != 0) & (data.price > 0)]
-data_processed = data.drop(columns=['depth', 'table', 'y', 'z'])
-data_dummy = pd.get_dummies(data_processed, columns=['cut', 'color', 'clarity'], drop_first=True)
-x = data_dummy.drop(columns='price')
-y = data_dummy.price
+x = pd.read_csv(args.xurl)
+y = pd.read_csv(args.yurl)
+y = y['price']
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
 
