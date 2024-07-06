@@ -156,5 +156,8 @@ with open('file.pkl', 'rb') as file:
 
 Of course, the trained models cannot be converted into a DataFrame using the *to_df* function, but the files containing the scores can be.
 
-
+# Challenges 2,3,4
+Unfortunately, I didn't have time to complete the other challenges.
+I'm not particularly accustomed to automating such lengthy pipelines; in fact, this is only my second time (the first was for my thesis project a few months ago). This process took more time than I expected.
+Nevertheless, I tried to make the code as general as possible, and it was both challenging and enjoyable to complete this task!
 
