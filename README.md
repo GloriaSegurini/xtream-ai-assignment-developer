@@ -151,7 +151,7 @@ For opening .pkl files it is possible to use the following sintax:
 import pickle
 
 with open('file.pkl', 'rb') as file:
-    loaded_file = pickle.load(file)
+    loaded_file = pickle.load(file)```
 
 Of course, the trained models cannot be converted into a DataFrame using the *to_df* function, but the files containing the scores can be.
 
