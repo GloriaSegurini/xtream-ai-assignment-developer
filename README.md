@@ -95,18 +95,18 @@ Since some metrics may need to be minimized (such as MAE), these are included as
 For example, suppose we have the following scenario:
 |            | r2_score | MAE_score |
 |------------|----------|-----------|
-| MODEL A    | 0.9     | 0.6     |
-| MODEL B    | 700     | 50      |
-| weight     | 1       | 2       | 
+| MODEL A    | 0.9      | 700       |
+| MODEL B    | 0.6      | 50        |
+| weight     | 1        | 2         | 
 
 In a similar scenario, the score calculation is:
 
 For model A:
 - r2_score_normalized = (0.9 - 0.6)/(0.9 - 0.6) = 1
 - MAE_normalized = 1 - (700 - 50)/(700 - 50) = 0
-- score = weights * metrics_normalized = [1, 2] * [1, 0]
+- score_model_A = weights * metrics_normalized = [1, 2] * [1, 0]
 
-Finally, the model with the best score is returned, already fitted and ready to be used.
+Finally, the model with the best score (highest one) is returned, already fitted and ready to be used.
 Note: It is important to emphasize that *model selection should be performed on the validation set and not on the test set!*
 
 ### Run code
