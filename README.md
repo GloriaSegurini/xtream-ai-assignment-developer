@@ -93,18 +93,18 @@ To evaluate the best model, a function is used that normalizes the results of th
 Since some metrics may need to be minimized (such as MAE), these are included as 1 minus the metric in the function calculation above, so that the best model will have the highest score.
 
 For example, suppose we have the following scenario:
-|            | MODEL A | MODEL B |
-|------------|---------|---------|
-| r2_score   | 0.9     | 0.6     |
-| MAE_score  | 700     | 50      |
+|            | r2_score | MAE_score |
+|------------|----------|-----------|
+| MODEL A    | 0.9     | 0.6     |
+| MODEL B    | 700     | 50      |
 | weight     | 1       | 2       | 
 
 In a similar scenario, the score calculation is:
 
-- For model A:
-  - \( r2\_score\_normalized = (0.9 - 0.6)/(0.9 - 0.6) = 1 \
-  - \( MAE\_normalized = 1 - \(700 - 50)/{(700 - 50) = 0 \
-  - \( score = weights * metrics\_normalized = [1, 2] * [1, 0] \)
+For model A:
+- r2_score_normalized = (0.9 - 0.6)/(0.9 - 0.6) = 1
+- MAE_normalized = 1 - (700 - 50)/(700 - 50) = 0
+- score = weights * metrics_normalized = [1, 2] * [1, 0]
 
 Finally, the model with the best score is returned, already fitted and ready to be used.
 Note: It is important to emphasize that *model selection should be performed on the validation set and not on the test set!*
