@@ -102,9 +102,9 @@ For example, suppose we have the following scenario:
 In a similar scenario, the score calculation is:
 
 - For model A:
-  - \( r2\_score\_normalized = \frac{(0.9 - 0.6)}{(0.9 - 0.6)} = 1 \)
-  - \( MAE\_normalized = 1 - \frac{(700 - 50)}{(700 - 50)} = 0 \)
-  - \( score = weights \times metrics\_normalized = [1, 2] \times [1, 0] \)
+  - \( r2\_score\_normalized = (0.9 - 0.6)/(0.9 - 0.6) = 1 \
+  - \( MAE\_normalized = 1 - \(700 - 50)/{(700 - 50) = 0 \
+  - \( score = weights * metrics\_normalized = [1, 2] * [1, 0] \)
 
 Finally, the model with the best score is returned, already fitted and ready to be used.
 Note: It is important to emphasize that *model selection should be performed on the validation set and not on the test set!*
@@ -151,7 +151,8 @@ For opening .pkl files it is possible to use the following sintax:
 import pickle
 
 with open('file.pkl', 'rb') as file:
-    loaded_file = pickle.load(file)```
+    loaded_file = pickle.load(file)
+```
 
 Of course, the trained models cannot be converted into a DataFrame using the *to_df* function, but the files containing the scores can be.
 
