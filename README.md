@@ -143,9 +143,17 @@ Now there are different possibilities depending on your needs:
 #### If you want to run the code from ipynb
 2. Navigate to the folder where you cloned the original repository and go to `xtream-ai-assignment-developer > data_training_and_best_model_pick > launch_notebook`
 
-
+##### Final Remarks
 In the file `train_and_pick_bestModel.py`, where the functions used in `full_pip.py` are defined, there is also a function *to_df* that takes a .pkl file as input and allows it to be saved as a pandas DataFrame. This function can be useful for visualizing the final results.
 
+For opening .pkl files it is possible to use the following sintax:
+```python
+import pickle
+
+with open('file.pkl', 'rb') as file:
+    loaded_file = pickle.load(file)
+
+Of course, the trained models cannot be converted into a DataFrame using the *to_df* function, but the files containing the scores can be.
 
 
 

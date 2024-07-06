@@ -48,8 +48,10 @@ def models_training(models, x_train, y_train, x_test, preds_toexp): #the objecti
     mod.fit(x_train, y_train)
 
     model_file = f'{model_name}_trained_model.pkl'
-    joblib.dump(mod, model_file)
-    results['model'][model_name]['fit_model_save'].append(model_file)
+
+    with open(model_file, 'wb') as file:
+       pickle.dump(mod, file)
+       results['model'][model_name]['fit_model_save'].append(model_file)
     
     
     print("Making predictions of model " + model_name + " **********************")
